@@ -1,0 +1,26 @@
+package sample.spring.BankApplication;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import sample.spring.BankApplication.controller.FixedDepositController;
+
+public class SpringBankApp {
+	private static Log logger = LogFactory.getLog(SpringBankApp.class);
+
+	@SuppressWarnings("resource")
+	public static void main(String args[]) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+		FixedDepositController fixedDepositController = (FixedDepositController) context
+				.getBean("controller");
+		
+
+		 logger.info("Submission status of fixed deposit : "
+				+ fixedDepositController.submit());
+		logger.info("Returned fixed deposit info : "
+				+ fixedDepositController.get()); 
+	}
+}

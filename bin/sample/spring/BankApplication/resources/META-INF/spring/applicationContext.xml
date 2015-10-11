@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="controller"
+		class="sample.spring.BankApplication.controller.FixedDepositControllerImpl" scope="prototype">
+		<!--  setter based DI with a reference to a reference bean object  -->
+		<property name="fixedDepositService" ref="service" />
+		<!--  Setter based DI , passing the string value to the setter-->
+		<property name="passTheValue" value="valuePassed" />
+		<!--  Constructor based DI, 0 indicates first argument, 1 indicates the second argument -->
+		<constructor-arg index="0" value="firstValue" />
+		<constructor-arg index="1" value="secondValue" />
+		
+	</bean>
+
+	<bean id="service"
+		class="sample.spring.BankApplication.service.FixedDepositServiceImpl" lazy-init="true">
+		<property name="fixedDepositDao" ref="dao" />
+	</bean>
+
+	<bean id="dao"
+		factory-bean="daoFactory"
+		class="sample.spring.BankApplication.dao.FixedDepositDaoFactory"
+		factory-method="getFixedDepositDao">
+		<constructor-arg index="0" value="hibernate" />
+	</bean>
+	
+	<bean id="daoFactory"
+		class="sample.spring.BankApplication.dao.FixedDepositDaoFactory">
+	</bean>
+	
+	<!-- Abstract bean definition -->
+	<bean id="daoTemplate" abstract="true">
+		<property name="databaseOperations" ref="databaseOperations" />
+	</bean>
+	
+	<!--  The above abstract definition can be inherited into the bean
+	by using the parent="daoTemplate" -->
+	
+	
+	
+	
+</beans>
